@@ -1,0 +1,40 @@
+---
+abstract: 'Hypatia Bindings for Chart::Clicker'
+author:
+  - 'Jack Maney <jack@jackmaney.com>'
+build_requires:
+  Hypatia: 0
+  Test::More: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.30
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300021, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Hypatia-Chart-Clicker
+requires:
+  Chart::Clicker: 0
+  Chart::Clicker::Data::DataSet: 0
+  Chart::Clicker::Data::Series: 0
+  Chart::Clicker::Data::Series::Size: 0
+  Chart::Clicker::Renderer::Area: 0
+  Chart::Clicker::Renderer::Bar: 0
+  Chart::Clicker::Renderer::Bubble: 0
+  Chart::Clicker::Renderer::Pie: 0
+  Chart::Clicker::Renderer::Point: 0
+  Chart::Clicker::Renderer::StackedArea: 0
+  Chart::Clicker::Renderer::StackedBar: 0
+  Data::Dumper: 0
+  Hypatia::Base: 0
+  Hypatia::Columns: 0
+  Moose: 0
+  Moose::Role: 0
+  Moose::Util::TypeConstraints: 0
+  MooseX::Aliases: 0
+  Scalar::Util: 0
+  namespace::autoclean: 0
+  strict: 0
+  warnings: 0
+version: 0.01
