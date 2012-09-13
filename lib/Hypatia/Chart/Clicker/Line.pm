@@ -1,7 +1,4 @@
 package Hypatia::Chart::Clicker::Line;
-{
-  $Hypatia::Chart::Clicker::Line::VERSION = '0.01';
-}
 use Moose;
 use MooseX::Aliases;
 use Moose::Util::TypeConstraints;
@@ -15,11 +12,32 @@ extends 'Hypatia::Chart::Clicker';
 
 #ABSTRACT: Line Charts with Hypatia and Chart::Clicker
 
+=head1 SYNOPSIS
+
+This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
+
+=attr columns
+
+The required column types are C<x> and C<y>.  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  In the latter case, the number of C<x> and C<y> columns must match and each respective C<x> and C<y> column will form its own line graph.  In the former case, the single C<x> column will act as the same C<x> column for all of the C<y> columns.
+
+If the C<columns> attribute is B<not> set, then the C<graph> method will look at the column names from your table or query I<in the order in which they appear>
+
+
+=attr stacked
+
+A boolean value indicating whether or not the graph should be a stacked line graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
+
+=cut
 
 has 'stacked'=>(isa=>'Bool',is=>'ro',lazy=>1,default=>0);
 
 
 
+=method chart([$data]), a.k.a graph([$data])
+
+This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
+
+=cut
 
 sub chart
 {
@@ -66,50 +84,3 @@ with 'Hypatia::Chart::Clicker::XYDataSet';
 #__PACKAGE__->meta->make_immutable;
 
 1;
-
-__END__
-
-=pod
-
-=head1 NAME
-
-Hypatia::Chart::Clicker::Line - Line Charts with Hypatia and Chart::Clicker
-
-=head1 VERSION
-
-version 0.01
-
-=head1 SYNOPSIS
-
-This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
-
-=head1 ATTRIBUTES
-
-=head2 columns
-
-The required column types are C<x> and C<y>.  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  In the latter case, the number of C<x> and C<y> columns must match and each respective C<x> and C<y> column will form its own line graph.  In the former case, the single C<x> column will act as the same C<x> column for all of the C<y> columns.
-
-If the C<columns> attribute is B<not> set, then the C<graph> method will look at the column names from your table or query I<in the order in which they appear>
-
-=head2 stacked
-
-A boolean value indicating whether or not the graph should be a stacked line graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
-
-=head1 METHODS
-
-=head2 chart([$data]), a.k.a graph([$data])
-
-This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
-
-=head1 AUTHOR
-
-Jack Maney <jack@jackmaney.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2012 by Jack Maney.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
-=cut

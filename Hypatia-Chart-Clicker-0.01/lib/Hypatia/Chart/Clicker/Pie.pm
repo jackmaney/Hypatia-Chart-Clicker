@@ -1,4 +1,7 @@
 package Hypatia::Chart::Clicker::Pie;
+{
+  $Hypatia::Chart::Clicker::Pie::VERSION = '0.01';
+}
 use Moose;
 use MooseX::Aliases;
 use Hypatia::Columns;
@@ -15,35 +18,15 @@ extends 'Hypatia::Chart::Clicker';
 
 #ABSTRACT: Line Charts with Hypatia and Chart::Clicker
 
-=head1 SYNOPSIS
-
-This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
-
-=attr columns
-
-The required column types are C<label> and C<values>.  Each of these must be a single string
-
-
-=cut
 
 subtype 'HypatiaPieColumns' => as class_type("Hypatia::Columns");
 coerce "HypatiaPieColumns",from "HashRef", via {Hypatia::Columns->new({columns=>$_,column_types=>[qw(label values)],use_native_validation=>0})};
 
 has '+cols'=>(isa=>'HypatiaPieColumns');
 
-=attr use_gradient
-
-A boolean value determining whether or not a gradient should be applied to the pie chart.  Defaults to 0.
-
-=cut
 
 has 'use_gradient'=>(isa=>'Bool',is=>'ro',default=>0);
 
-=attr gradient_color
-
-This is a hash reference of C<red>, C<green>, C<blue>, and C<alpha> values that are passed into a L<Graphics::Color::RGB> object (or, if you prefer, you can pass in a L<Graphics::Color::RGB> object directly).  The default RGBA values are 1,1,1,0.25, respectively.
-
-=cut
 
 subtype 'GradientColor' => as class_type("Graphics::Color::RGB");
 coerce "GradientColor",from "HashRef", via {Graphics::Color::RGB->new($_)};
@@ -64,11 +47,6 @@ sub BUILD
 	
 }
 
-=method chart
-
-This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
-
-=cut
 
 sub chart
 {
@@ -182,3 +160,52 @@ override '_validate_input_data',sub
 #__PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Hypatia::Chart::Clicker::Pie - Line Charts with Hypatia and Chart::Clicker
+
+=head1 VERSION
+
+version 0.01
+
+=head1 SYNOPSIS
+
+This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
+
+=head1 ATTRIBUTES
+
+=head2 columns
+
+The required column types are C<label> and C<values>.  Each of these must be a single string
+
+=head2 use_gradient
+
+A boolean value determining whether or not a gradient should be applied to the pie chart.  Defaults to 0.
+
+=head2 gradient_color
+
+This is a hash reference of C<red>, C<green>, C<blue>, and C<alpha> values that are passed into a L<Graphics::Color::RGB> object (or, if you prefer, you can pass in a L<Graphics::Color::RGB> object directly).  The default RGBA values are 1,1,1,0.25, respectively.
+
+=head1 METHODS
+
+=head2 chart
+
+This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
+
+=head1 AUTHOR
+
+Jack Maney <jack@jackmaney.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Jack Maney.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

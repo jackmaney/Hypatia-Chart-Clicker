@@ -1,4 +1,7 @@
 package Hypatia::Chart::Clicker::XYDataSet;
+{
+  $Hypatia::Chart::Clicker::XYDataSet::VERSION = '0.01';
+}
 use strict;
 use warnings;
 use Moose::Role;
@@ -9,11 +12,6 @@ requires qw(columns data_series_names);
 
 #ABSTRACT: A role for building vanilla Chart::Clicker::DataSet objects
 
-=pod
-
-This Role is internal, and is used for generating L<Chart::Clicker::DataSet> objects.  There should be no need for you to call it externally.
-
-=cut
 
 sub _build_data_set
 {
@@ -90,3 +88,30 @@ sub _build_data_set
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Hypatia::Chart::Clicker::XYDataSet - A role for building vanilla Chart::Clicker::DataSet objects
+
+=head1 VERSION
+
+version 0.01
+
+This Role is internal, and is used for generating L<Chart::Clicker::DataSet> objects.  There should be no need for you to call it externally.
+
+=head1 AUTHOR
+
+Jack Maney <jack@jackmaney.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Jack Maney.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

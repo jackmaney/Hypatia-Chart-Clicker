@@ -1,7 +1,4 @@
 package Hypatia::Chart::Clicker::Bar;
-{
-  $Hypatia::Chart::Clicker::Bar::VERSION = '0.01';
-}
 use Moose;
 use MooseX::Aliases;
 use Chart::Clicker;
@@ -15,9 +12,25 @@ extends 'Hypatia::Chart::Clicker';
 
 #ABSTRACT: Bar Charts with Hypatia and Chart::Clicker
 
+=attr columns
+
+The required column types are C<x> and C<y> (ie the default given by L<Hypatia>).  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  In the latter case, the number of C<x> and C<y> columns must match and each respective C<x> and C<y> column will form its own bar chart.  In the former case, the single C<x> column will act as the same C<x> column for all of the C<y> columns.
+
+=attr stacked
+
+A boolean value indicating whether or not the graph should be a stacked bar graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
+
+=cut
 
 has 'stacked'=>(isa=>'Bool',is=>'ro',default=>0);
 
+=attr baseline
+
+A numeric value indicating where the baseline should be on the y-axis.  Bars with values below the baseline will be considered "negative", and will point downwards.  Take a look at L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.png|this chart> and L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.pl|the corresponding code> for an example.
+
+If this attribute isn't set (which is the default), then there is no baseline.
+
+=cut
 
 has 'baseline'=>(isa=>'Num',is=>'ro',predicate=>'has_baseline');
 
@@ -80,44 +93,3 @@ with 'Hypatia::Chart::Clicker::XYDataSet';
 
 
 1;
-
-__END__
-
-=pod
-
-=head1 NAME
-
-Hypatia::Chart::Clicker::Bar - Bar Charts with Hypatia and Chart::Clicker
-
-=head1 VERSION
-
-version 0.01
-
-=head1 ATTRIBUTES
-
-=head2 columns
-
-The required column types are C<x> and C<y> (ie the default given by L<Hypatia>).  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  In the latter case, the number of C<x> and C<y> columns must match and each respective C<x> and C<y> column will form its own bar chart.  In the former case, the single C<x> column will act as the same C<x> column for all of the C<y> columns.
-
-=head2 stacked
-
-A boolean value indicating whether or not the graph should be a stacked bar graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
-
-=head2 baseline
-
-A numeric value indicating where the baseline should be on the y-axis.  Bars with values below the baseline will be considered "negative", and will point downwards.  Take a look at L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.png|this chart> and L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.pl|the corresponding code> for an example.
-
-If this attribute isn't set (which is the default), then there is no baseline.
-
-=head1 AUTHOR
-
-Jack Maney <jack@jackmaney.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2012 by Jack Maney.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
-=cut

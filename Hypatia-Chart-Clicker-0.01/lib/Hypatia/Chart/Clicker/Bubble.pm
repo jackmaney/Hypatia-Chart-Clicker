@@ -1,4 +1,7 @@
 package Hypatia::Chart::Clicker::Bubble;
+{
+  $Hypatia::Chart::Clicker::Bubble::VERSION = '0.01';
+}
 use Moose;
 use MooseX::Aliases;
 use Hypatia::Columns;
@@ -15,18 +18,6 @@ extends 'Hypatia::Chart::Clicker';
 
 #ABSTRACT: Line Charts with Hypatia and Chart::Clicker
 
-=head1 SYNOPSIS
-
-This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
-
-=attr columns
-
-The required column types are C<x>, C<y>, and C<size>.  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  If C<y> and C<size> are array references, then they must be the same size.  If C<x> is an array reference, then it also must be the same size as C<y> and C<size> (and in this case, each C<x> column will serve as x-axis values corresponding to the C<y> and C<size> columns).  Otherwise, if C<x> is a string, then the single C<x> column will serve as a common set of x-values for all C<y> and C<size> values.
-
-Of course, since C<size> represents size values for the given data set(s), please make sure that the data stored in any C<size> columns contains nonnegative values.
-
-
-=cut
 
 subtype 'HypatiaBubbleColumns' => as class_type("Hypatia::Columns");
 coerce "HypatiaBubbleColumns",from "HashRef", via {Hypatia::Columns->new({columns=>$_,column_types=>[qw(x y size)]})};
@@ -35,11 +26,6 @@ has '+cols'=>(isa=>'HypatiaBubbleColumns');
 
 
 
-=method chart([$data]), a.k.a graph([$data])
-
-This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
-
-=cut
 
 sub chart
 {
@@ -230,3 +216,46 @@ override '_validate_input_data',sub
 #__PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Hypatia::Chart::Clicker::Bubble - Line Charts with Hypatia and Chart::Clicker
+
+=head1 VERSION
+
+version 0.01
+
+=head1 SYNOPSIS
+
+This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known as the C<chart> method) returns the C<Chart::Clicker> object built from the relevant data and options provided.
+
+=head1 ATTRIBUTES
+
+=head2 columns
+
+The required column types are C<x>, C<y>, and C<size>.  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  If C<y> and C<size> are array references, then they must be the same size.  If C<x> is an array reference, then it also must be the same size as C<y> and C<size> (and in this case, each C<x> column will serve as x-axis values corresponding to the C<y> and C<size> columns).  Otherwise, if C<x> is a string, then the single C<x> column will serve as a common set of x-values for all C<y> and C<size> values.
+
+Of course, since C<size> represents size values for the given data set(s), please make sure that the data stored in any C<size> columns contains nonnegative values.
+
+=head1 METHODS
+
+=head2 chart([$data]), a.k.a graph([$data])
+
+This method returns the relevant L<Chart::Clicker> object.  If neither the C<dbi> nor the C<input_data> attributes have been set, then you can input your data as an argument here.
+
+=head1 AUTHOR
+
+Jack Maney <jack@jackmaney.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Jack Maney.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
