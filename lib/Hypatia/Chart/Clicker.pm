@@ -59,17 +59,20 @@ sub _get_data
 {
 	my $self=shift;
 	my @columns;
+	
+	$self->_guess_columns unless $self->using_columns;
+	
 	if(@_)
 	{
 		@columns=grep{defined}map{$self->columns->{$_}}@_;
 	}
 	else
 	{
-		@columns=@{$self->columns->column_types};
+		@columns = @{$self->columns->column_types};
 	}
 	
 	if($self->use_dbi)
-	{
+	{	
 		return $self->dbi->data(@columns);
 	}
 	else
@@ -78,6 +81,33 @@ sub _get_data
 	}
 }
 
+# This can be thought of as a quasi-abstract method.
+# Unless you're calling a class that overrides it, you better have your columns set.
+sub _guess_columns
+{
+	confess "The attribute 'columns' is required";
+}
+
+# This is a setup method for methods overriding _guess_columns.
+# Yes, I know about the Moose keyword 'after', but I'm not
+# sure offhand how to run the code in _setup_guess_columns
+# except if _guess_columns is being overridden.
+sub _setup_guess_columns
+{
+	my $self=shift;
+	
+	my $query=$self->dbi->_build_query;
+	
+	my $dbh=$self->dbh;
+	my $sth=$dbh->prepare($query) or die $dbh->errstr;
+	$sth->execute or die $dbh->errstr;
+	
+	my @return = @{$sth->{NAME}};
+	
+	$sth->finish;
+	
+	return \@return;
+}
 
 sub BUILD
 {
@@ -103,6 +133,8 @@ sub _validate_input_data
 	
 	my @column_list;
 	
+	$self->_guess_columns unless $self->using_columns;
+
 	foreach my $type(keys %{$self->columns})
 	{
 		my $col=$self->columns->{$type};

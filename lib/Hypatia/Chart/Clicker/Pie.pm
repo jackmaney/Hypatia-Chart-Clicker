@@ -155,7 +155,26 @@ sub _build_data_set
 
 }
 
-
+override '_guess_columns' =>sub
+{
+    my $self=shift;
+    
+    my @columns=@{$self->_setup_guess_columns};
+    
+    my $col_types={};
+    
+    if(@columns != 2)
+    {
+	confess "Only two data columns (of types 'label' and 'values') are allowed for pie charts";
+    }
+    else
+    {
+	$col_types->{labels} = $columns[0];
+	$col_types->{values} = $columns[1];
+    }
+    
+    $self->cols(Hypatia::Columns->new({columns=>$col_types,column_types=>[qw(label values)],use_native_validation=>0}));
+};
 
 
 
@@ -179,6 +198,6 @@ override '_validate_input_data',sub
 };
 
 
-#__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1;

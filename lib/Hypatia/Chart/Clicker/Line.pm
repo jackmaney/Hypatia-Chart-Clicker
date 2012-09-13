@@ -76,11 +76,43 @@ sub chart
 
 alias graph=>'chart';
 
+override '_guess_columns' =>sub
+{
+	my $self=shift;
+	
+	my @columns=@{$self->_setup_guess_columns};
+	
+	my $col_types={};
+	
+	if(@columns < 2)
+	{
+		confess "One column is insufficient to form a chart";
+	}
+	elsif(@columns == 2)
+	{
+		$col_types->{x}=$columns[0];
+		$col_types->{y}=$columns[1];
+	}
+	elsif(scalar(@columns) % 2)
+	{
+		$col_types->{x}=$columns[0];
+		$col_types->{y}=[@columns[1..$#columns]];
+	}
+	else
+	{
+		while(@columns)
+		{
+			push @{$col_types->{x}}, shift @columns;
+			push @{$col_types->{y}}, shift @columns;
+		}
+	}
+	
+	$self->columns(Hypatia::Columns->new(columns=>$col_types));
+};
 
 
+with 'Hypatia::Chart::Clicker::Role::XY';
 
-with 'Hypatia::Chart::Clicker::XYDataSet';
-
-#__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1;

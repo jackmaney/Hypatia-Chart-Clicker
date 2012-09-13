@@ -25,6 +25,25 @@ The required column types are C<x>, C<y>, and C<size>.  Each of the values for t
 
 Of course, since C<size> represents size values for the given data set(s), please make sure that the data stored in any C<size> columns contains nonnegative values.
 
+If this column isn't provided, then Hypatia will do its best job to guess which column names of your data correspond to which types, as follows:
+
+=over 4
+
+=item 1. If there are three columns, then they'll be assigned to C<x>, C<y>, and C<size> (respectively).
+=item 2. Otherwise, if the number of columns is a multiple of 3, then the corresponding types will be
+
+	x, y, size, x, y, size,..., x, y, size
+
+(ie each consecutive triple will be assigned to C<x>, C<y>, and C<size>, respectively).
+
+=item 3. If the number of columns is odd, larger than 3, and congruent to 1 mod 3, then the first column will be assigned to type C<x>, and the remaining columns will be paired off as types:
+
+	y, size, y, size,..., y, size
+
+=item 4. If none of the above are the case, then an error is thrown.
+
+=back
+
 
 =cut
 
@@ -157,7 +176,41 @@ sub _build_data_set
 
 }
 
-
+override '_guess_columns' =>sub
+{
+    my $self=shift;
+    
+    my @columns=@{$self->_setup_guess_columns};
+    
+    my $col_types={};
+    
+    if(@columns < 3)
+    {
+	confess "One or two columns are insufficient to form a bubble chart";
+    }
+    elsif(@columns == 3)
+    {
+	$col_types->{x} = $columns[0];
+        $col_types->{y} = $columns[1];
+	$col_types->{size} = $columns[2];
+    }
+    elsif(scalar(@columns) % 2 and scalar(@columns) % 3 == 1)
+    {
+	$col_types->{x}=$columns[0];
+	
+	while(@columns)
+	{
+		push @{$col_types->{y}}, shift @columns;
+		push @{$col_types->{size}}, shift @columns;
+	}
+    }
+    else
+    {
+	confess "Unable to guess which columns correspond to which type. Please use the 'columns' attribute";
+    }
+    
+    $self->cols(Hypatia::Columns->new({columns=>$col_types}));
+};
 
 
 

@@ -71,7 +71,7 @@ alias graph=>'chart';
 
 
 
-with 'Hypatia::Chart::Clicker::XYDataSet';
+with 'Hypatia::Chart::Clicker::Role::XY';
 
 #__PACKAGE__->meta->make_immutable;
 
