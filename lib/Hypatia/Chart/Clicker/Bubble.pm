@@ -36,7 +36,7 @@ If this column isn't provided, then Hypatia will do its best job to guess which 
 
 (ie each consecutive triple will be assigned to C<x>, C<y>, and C<size>, respectively).
 
-=item 3. If the number of columns is odd, larger than 3, and congruent to 1 mod 3, then the first column will be assigned to type C<x>, and the remaining columns will be paired off as types:
+=item 3. If the number of columns is odd, larger than 3, but not divisible by 3, then the first column will be assigned to type C<x>, and the remaining columns will be paired off as types:
 
 	y, size, y, size,..., y, size
 
@@ -194,7 +194,7 @@ override '_guess_columns' =>sub
         $col_types->{y} = $columns[1];
 	$col_types->{size} = $columns[2];
     }
-    elsif(scalar(@columns) % 2 and scalar(@columns) % 3 == 1)
+    elsif(scalar(@columns) % 2)
     {
 	$col_types->{x}=$columns[0];
 	
@@ -280,6 +280,6 @@ override '_validate_input_data',sub
 };
 
 
-#__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1;
