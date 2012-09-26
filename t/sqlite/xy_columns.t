@@ -23,15 +23,23 @@ foreach my $graph_type(qw(Area Bar Line Point))
 	back_end=>"Chart::Clicker",
 	graph_type=>$graph_type,
 	dbi=>{dsn=>"dbi:SQLite:dbname=" . $hdts->sqlite_db_file,
-	    table=>"hypatia_test_xy"},
-	    columns=>{x=>"x1",y=>"y1"}
+	    query=>"select x1,y1 from hypatia_test_xy"},
     });
     
     ok(blessed($hypatia) eq "Hypatia");
     ok(blessed($hypatia->dbh) eq 'DBI::db');
     ok($hypatia->dbh->{Active});
     
+    ok(blessed($hypatia->cols) eq 'Hypatia::Columns');
+    
+    ok(not $hypatia->using_columns);
+    
     my $cc=$hypatia->chart;
+    
+    ok($hypatia->using_columns);
+    
+    ok($hypatia->columns->{x} eq "x1");
+    ok($hypatia->columns->{y} eq "y1");
     
     ok(blessed($cc) eq 'Chart::Clicker');
     

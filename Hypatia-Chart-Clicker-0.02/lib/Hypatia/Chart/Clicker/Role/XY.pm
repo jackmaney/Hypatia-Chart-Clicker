@@ -1,4 +1,7 @@
 package Hypatia::Chart::Clicker::Role::XY;
+{
+  $Hypatia::Chart::Clicker::Role::XY::VERSION = '0.02';
+}
 use Moose::Role;
 use Chart::Clicker::Data::Series;
 use Chart::Clicker::Data::DataSet;
@@ -6,25 +9,6 @@ use Hypatia::Columns;
 
 #ABSTRACT: Column Guessing and DataSet Building for Most Graph Types
 
-=head1 SYNOPSIS
-
-This role serves up "default" methods for guessing columns and building a L<DataSet|Chart::Clicker::Data::DataSet>.
-
-The default column guessing is as follows:
-
-=over 4
-
-=item 1. If there are exactly two columns, then the first column is considered to be of type C<x> and the second of type C<y>.
-
-=item 2. More generally, if there is an even number of columns, then they're paired off into the corresponding types:
-
-    x, y, x, y,..., x, y
-
-=item 3. If there are an odd number of columns, then the first column is considered to be of type C<x> and B<all remaining columns> are considered to be of type C<y>.
-
-=back
-
-=cut
 
 requires qw(data_series_names _setup_guess_columns);
 
@@ -135,3 +119,46 @@ sub _build_data_set
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Hypatia::Chart::Clicker::Role::XY - Column Guessing and DataSet Building for Most Graph Types
+
+=head1 VERSION
+
+version 0.02
+
+=head1 SYNOPSIS
+
+This role serves up "default" methods for guessing columns and building a L<DataSet|Chart::Clicker::Data::DataSet>.
+
+The default column guessing is as follows:
+
+=over 4
+
+=item 1. If there are exactly two columns, then the first column is considered to be of type C<x> and the second of type C<y>.
+
+=item 2. More generally, if there is an even number of columns, then they're paired off into the corresponding types:
+
+    x, y, x, y,..., x, y
+
+=item 3. If there are an odd number of columns, then the first column is considered to be of type C<x> and B<all remaining columns> are considered to be of type C<y>.
+
+=back
+
+=head1 AUTHOR
+
+Jack Maney <jack@jackmaney.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Jack Maney.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

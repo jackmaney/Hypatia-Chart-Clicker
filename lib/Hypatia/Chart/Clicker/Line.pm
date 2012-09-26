@@ -20,7 +20,7 @@ This module extends L<Hypatia::Chart::Clicker>.  The C<graph> method (also known
 
 The required column types are C<x> and C<y>.  Each of the values for this attribute may be either a string (indicating one column) or an array reference of strings (indicating several columns).  In the latter case, the number of C<x> and C<y> columns must match and each respective C<x> and C<y> column will form its own line graph.  In the former case, the single C<x> column will act as the same C<x> column for all of the C<y> columns.
 
-If the C<columns> attribute is B<not> set, then the C<graph> method will look at the column names from your table or query I<in the order in which they appear>
+If the C<columns> attribute is B<not> set, then column guessing is used as needed via the algorithm described in L<Hypatia::Chart::Clicker::Role::XY>.
 
 
 =attr stacked
@@ -75,40 +75,6 @@ sub chart
 }
 
 alias graph=>'chart';
-
-override '_guess_columns' =>sub
-{
-	my $self=shift;
-	
-	my @columns=@{$self->_setup_guess_columns};
-	
-	my $col_types={};
-	
-	if(@columns < 2)
-	{
-		confess "One column is insufficient to form a chart";
-	}
-	elsif(@columns == 2)
-	{
-		$col_types->{x}=$columns[0];
-		$col_types->{y}=$columns[1];
-	}
-	elsif(scalar(@columns) % 2)
-	{
-		$col_types->{x}=$columns[0];
-		$col_types->{y}=[@columns[1..$#columns]];
-	}
-	else
-	{
-		while(@columns)
-		{
-			push @{$col_types->{x}}, shift @columns;
-			push @{$col_types->{y}}, shift @columns;
-		}
-	}
-	
-	$self->columns(Hypatia::Columns->new(columns=>$col_types));
-};
 
 
 with 'Hypatia::Chart::Clicker::Role::XY';

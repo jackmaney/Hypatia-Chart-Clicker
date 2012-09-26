@@ -22,7 +22,7 @@ foreach my $graph_type(qw(Area Bar Line Point))
     my $hypatia=Hypatia->new({
 	back_end=>"Chart::Clicker",
 	graph_type=>$graph_type,
-	dbi=>{dsn=>"dbi:SQLite:dbname=" . $hdts->sqlite_db_file,
+	dbi=>{dbh=>$hdts->dbh,
 	    table=>"hypatia_test_xy"},
 	    columns=>{x=>"x1",y=>"y1"}
     });

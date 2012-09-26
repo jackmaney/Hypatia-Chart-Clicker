@@ -1,5 +1,5 @@
-Revision history for {{$dist->name}}
+Revision history for Hypatia-Chart-Clicker
 
-{{$NEXT}}
+0.02      2012-09-26 04:10:08 America/Chicago
 
 - Added a ton of unit tests and the ability to make (reasonably intelligent) guesses at what columns should be which type, depending on the graph type you want. Take a look at the documentation for details.

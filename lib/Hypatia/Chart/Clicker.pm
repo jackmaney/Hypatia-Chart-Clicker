@@ -54,7 +54,6 @@ In C<Chart::Clicker>, every chart has one or more data set (ie L<Chart::Clicker:
 
 has 'data_series_names'=>(isa=>'Str|ArrayRef[Str]',is=>'ro',predicate=>'has_data_series_names');
 
-
 sub _get_data
 {
 	my $self=shift;
@@ -81,33 +80,7 @@ sub _get_data
 	}
 }
 
-# This can be thought of as a quasi-abstract method.
-# Unless you're calling a class that overrides it, you better have your columns set.
-sub _guess_columns
-{
-	confess "The attribute 'columns' is required";
-}
 
-# This is a setup method for methods overriding _guess_columns.
-# Yes, I know about the Moose keyword 'after', but I'm not
-# sure offhand how to run the code in _setup_guess_columns
-# except if _guess_columns is being overridden.
-sub _setup_guess_columns
-{
-	my $self=shift;
-	
-	my $query=$self->dbi->_build_query;
-	
-	my $dbh=$self->dbh;
-	my $sth=$dbh->prepare($query) or die $dbh->errstr;
-	$sth->execute or die $dbh->errstr;
-	
-	my @return = @{$sth->{NAME}};
-	
-	$sth->finish;
-	
-	return \@return;
-}
 
 sub BUILD
 {
