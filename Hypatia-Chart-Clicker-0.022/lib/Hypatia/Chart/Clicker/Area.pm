@@ -1,25 +1,22 @@
-package Hypatia::Chart::Clicker::Bar;
+package Hypatia::Chart::Clicker::Area;
 {
-  $Hypatia::Chart::Clicker::Bar::VERSION = '0.021';
+  $Hypatia::Chart::Clicker::Area::VERSION = '0.022';
 }
 use Moose;
 use MooseX::Aliases;
 use Chart::Clicker;
 use Chart::Clicker::Data::DataSet;
-use Chart::Clicker::Renderer::Bar;
-use Chart::Clicker::Renderer::StackedBar;
+use Chart::Clicker::Renderer::Area;
+use Chart::Clicker::Renderer::StackedArea;
 use Moose::Util::TypeConstraints;
 use namespace::autoclean;
 
 extends 'Hypatia::Chart::Clicker';
 
-#ABSTRACT: Bar Charts with Hypatia and Chart::Clicker
+#ABSTRACT: Area Charts with Hypatia and Chart::Clicker
 
 
 has 'stacked'=>(isa=>'Bool',is=>'ro',default=>0);
-
-
-has 'baseline'=>(isa=>'Num',is=>'ro',predicate=>'has_baseline');
 
 
 
@@ -62,12 +59,10 @@ sub chart
 	
 	
 	my $dc=$cc->get_context("default");
-   
-	$dc->range_axis->baseline($self->baseline) if $self->has_baseline;
 	
-	my $renderer="Chart::Clicker::Renderer::Bar";
+	my $renderer="Chart::Clicker::Renderer::Area";
 	
-	$renderer="Chart::Clicker::Renderer::StackedBar" if $self->stacked;
+	$renderer="Chart::Clicker::Renderer::StackedArea" if $self->stacked;
 	
 	$dc->renderer($renderer->new);     
 	
@@ -87,11 +82,11 @@ __END__
 
 =head1 NAME
 
-Hypatia::Chart::Clicker::Bar - Bar Charts with Hypatia and Chart::Clicker
+Hypatia::Chart::Clicker::Area - Area Charts with Hypatia and Chart::Clicker
 
 =head1 VERSION
 
-version 0.021
+version 0.022
 
 =head1 ATTRIBUTES
 
@@ -103,13 +98,7 @@ If the C<columns> attribute is B<not> set, then column guessing is used as neede
 
 =head2 stacked
 
-A boolean value indicating whether or not the graph should be a stacked bar graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
-
-=head2 baseline
-
-A numeric value indicating where the baseline should be on the y-axis.  Bars with values below the baseline will be considered "negative", and will point downwards.  Take a look at L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.png|this chart> and L<https://github.com/gphat/chart-clicker-examples/blob/master/bar/bar-baseline.pl|the corresponding code> for an example.
-
-If this attribute isn't set (which is the default), then there is no baseline.
+A boolean value indicating whether or not the graph should be a stacked area graph (ie whether or not the y values should be treated cumulatively).  This is disabled by default.
 
 =head1 AUTHOR
 

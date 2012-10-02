@@ -12,7 +12,7 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Hypatia Bindings for Chart::Clicker\r",
   "AUTHOR" => "Jack Maney <jack\@jackmaney.com>",
   "BUILD_REQUIRES" => {
-    "Hypatia" => 0,
+    "Hypatia" => "0.026",
     "Hypatia::DBI::Test::SQLite" => 0,
     "Test::More" => 0,
     "strict" => 0,
@@ -47,7 +47,7 @@ my %WriteMakefileArgs = (
     "Scalar::Util" => 0,
     "namespace::autoclean" => 0
   },
-  "VERSION" => "0.021",
+  "VERSION" => "0.022",
   "test" => {
     "TESTS" => "t/*.t t/sqlite/*.t"
   }

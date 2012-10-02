@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker;
 {
-  $Hypatia::Chart::Clicker::VERSION = '0.021';
+  $Hypatia::Chart::Clicker::VERSION = '0.022';
 }
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -48,7 +48,7 @@ Hypatia::Chart::Clicker - Hypatia Bindings for Chart::Clicker
 
 =head1 VERSION
 
-version 0.021
+version 0.022
 
 =head1 SYNOPSIS
 
