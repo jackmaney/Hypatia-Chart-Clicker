@@ -15,7 +15,7 @@ BEGIN
     }
 }
 
-my $hdts=Hypatia::DBI::Test::SQLite->new({table=>"hypatia_test_xy"});
+my $hdts=Hypatia::DBI::Test::SQLite->new({table=>"hypatia_test_xy",sqlite_db_file=>"hypatia_test.db"});
 
 foreach my $graph_type(qw(Area Bar Line Point))
 {
@@ -23,28 +23,15 @@ foreach my $graph_type(qw(Area Bar Line Point))
 	back_end=>"Chart::Clicker",
 	graph_type=>$graph_type,
 	dbi=>{dsn=>"dbi:SQLite:dbname=" . $hdts->sqlite_db_file,
-	    query=>"select x1,y1,x2,y2 from hypatia_test_xy"},
+	    table=>"hypatia_test_xy"},
+	    columns=>{x=>[qw(x1 x2)],y=>[qw(y1 y2)]}
     });
     
     ok(blessed($hypatia) eq "Hypatia");
     ok(blessed($hypatia->dbh) eq "DBI::db");
     ok($hypatia->dbh->{Active});
     
-    ok(blessed($hypatia->cols) eq 'Hypatia::Columns');
-    
-    ok(not $hypatia->using_columns);
-    
     my $cc=$hypatia->chart;
-    
-    ok($hypatia->using_columns);
-        
-    ok(@{$hypatia->columns->{$_}} == 2) foreach("x","y");
-    
-    ok($hypatia->columns->{x}->[0] eq "x1");
-    ok($hypatia->columns->{x}->[1] eq "x2");
-    ok($hypatia->columns->{y}->[0] eq "y1");
-    ok($hypatia->columns->{y}->[1] eq "y2");
-
     
     ok(blessed($cc) eq "Chart::Clicker");
     

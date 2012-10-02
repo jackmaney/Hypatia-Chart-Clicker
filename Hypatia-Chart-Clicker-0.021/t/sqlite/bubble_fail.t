@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests=>1;
+use Test::More;
 use Hypatia;
 use Hypatia::DBI::Test::SQLite;
 use Scalar::Util qw(blessed);
@@ -27,3 +27,4 @@ my $dbh=$hdts->dbh;
  
  ok($@);
  
+ done_testing();

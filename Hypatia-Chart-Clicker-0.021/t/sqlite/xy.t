@@ -15,7 +15,7 @@ BEGIN
     }
 }
 
-my $hdts=Hypatia::DBI::Test::SQLite->new({table=>"hypatia_test_xy"});
+my $hdts=Hypatia::DBI::Test::SQLite->new({table=>"hypatia_test_xy",sqlite_db_file=>"hypatia_test.db"});
 
 foreach my $graph_type(qw(Area Bar Line Point))
 {

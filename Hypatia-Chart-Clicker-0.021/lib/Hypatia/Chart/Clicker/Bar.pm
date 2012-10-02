@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Bar;
 {
-  $Hypatia::Chart::Clicker::Bar::VERSION = '0.02';
+  $Hypatia::Chart::Clicker::Bar::VERSION = '0.021';
 }
 use Moose;
 use MooseX::Aliases;
@@ -91,7 +91,7 @@ Hypatia::Chart::Clicker::Bar - Bar Charts with Hypatia and Chart::Clicker
 
 =head1 VERSION
 
-version 0.02
+version 0.021
 
 =head1 ATTRIBUTES
 

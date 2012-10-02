@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker;
 {
-  $Hypatia::Chart::Clicker::VERSION = '0.02';
+  $Hypatia::Chart::Clicker::VERSION = '0.021';
 }
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -11,7 +11,7 @@ extends 'Hypatia::Base';
 #ABSTRACT: Hypatia Bindings for Chart::Clicker
 
 
-has 'input_data'=>(isa=>'HashRef[ArrayRef[Num]]',is=>'ro',predicate=>'has_input_data');    
+has '+input_data'=>(isa=>'HashRef[ArrayRef[Num]]',is=>'ro');    
 
 
 
@@ -19,31 +19,7 @@ has 'input_data'=>(isa=>'HashRef[ArrayRef[Num]]',is=>'ro',predicate=>'has_input_
 
 has 'data_series_names'=>(isa=>'Str|ArrayRef[Str]',is=>'ro',predicate=>'has_data_series_names');
 
-sub _get_data
-{
-	my $self=shift;
-	my @columns;
-	
-	$self->_guess_columns unless $self->using_columns;
-	
-	if(@_)
-	{
-		@columns=grep{defined}map{$self->columns->{$_}}@_;
-	}
-	else
-	{
-		@columns = @{$self->columns->column_types};
-	}
-	
-	if($self->use_dbi)
-	{	
-		return $self->dbi->data(@columns);
-	}
-	else
-	{
-		return $self->input_data;
-	}
-}
+
 
 
 
@@ -58,73 +34,8 @@ sub BUILD
 	}
 }
 
-sub _validate_input_data
-{
-	my $self=shift;
-	
-	my $data=shift;
-	
-	return undef unless defined $data;
-	
-	my $first=1;
-	my $num_rows;
-	
-	my @column_list;
-	
-	$self->_guess_columns unless $self->using_columns;
 
-	foreach my $type(keys %{$self->columns})
-	{
-		my $col=$self->columns->{$type};
-		
-		if(ref $col eq ref [])
-		{
-			foreach my $c(@$col)
-			{
-				push @column_list,$c unless grep{$c eq $_}@column_list;
-			}
-		}
-		else
-		{
-			push @column_list,$col unless grep{$col eq $_}@column_list;
-		}
-	}
-	
-	foreach my $col(@column_list)
-	{ 
-		unless(grep{$_ eq $col}(keys %$data))
-		{
-			warn "WARNING: Column \"$col\" not found as a key in the input_data attribute\n";
-			return undef;
-		}
-		
-		
-		my @column=@{$data->{$col}};
-		
-		unless(@column == grep{defined $_}@column)
-		{
-			warn "WARNING: Undefined values found in the input_data for column $col";
-			return undef;
-		}
-		
-		if($first)
-		{
-			$num_rows=scalar(@column);
-			$first=0;
-		}
-		else
-		{
-			unless(@{$data->{$col}} == $num_rows)
-			{
-				warn "WARNING: Mismatch for number of elements in input_data values";
-				return undef;
-			}
-		}
-	}
-	
-	return 1;
-}
-
+__PACKAGE__->meta->make_immutable;
 1; 
 
 __END__
@@ -137,7 +48,7 @@ Hypatia::Chart::Clicker - Hypatia Bindings for Chart::Clicker
 
 =head1 VERSION
 
-version 0.02
+version 0.021
 
 =head1 SYNOPSIS
 
