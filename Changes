@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+- Fixed a bug in the test setup_guess_columns.t that caused failures for users who don't have DBD::SQLite installed.
+
 0.022     2012-10-01 21:06:11 America/Chicago
 
 - Added a pre-requisite of Hypatia version 0.026 (to ensure that the tests work with the new version of Hypatia::DBI::Test::SQLite).

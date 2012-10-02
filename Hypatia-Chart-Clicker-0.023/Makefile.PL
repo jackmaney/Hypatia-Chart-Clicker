@@ -47,7 +47,7 @@ my %WriteMakefileArgs = (
     "Scalar::Util" => 0,
     "namespace::autoclean" => 0
   },
-  "VERSION" => "0.022",
+  "VERSION" => "0.023",
   "test" => {
     "TESTS" => "t/*.t t/sqlite/*.t"
   }

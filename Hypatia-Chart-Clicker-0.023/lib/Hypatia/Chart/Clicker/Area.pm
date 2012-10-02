@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Area;
 {
-  $Hypatia::Chart::Clicker::Area::VERSION = '0.022';
+  $Hypatia::Chart::Clicker::Area::VERSION = '0.023';
 }
 use Moose;
 use MooseX::Aliases;
@@ -86,7 +86,7 @@ Hypatia::Chart::Clicker::Area - Area Charts with Hypatia and Chart::Clicker
 
 =head1 VERSION
 
-version 0.022
+version 0.023
 
 =head1 ATTRIBUTES
 

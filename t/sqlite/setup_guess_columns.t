@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More;
 use Hypatia::DBI::Test::SQLite;
 use Hypatia::Chart::Clicker;
 use Scalar::Util qw(blessed);
@@ -37,3 +37,4 @@ ok(@columns == 4);
 
 ok(scalar(grep{$_ eq 'x1' or $_ eq 'x2' or $_ eq 'y1' or $_ eq 'y2'}@columns) == 4);
 
+done_testing();

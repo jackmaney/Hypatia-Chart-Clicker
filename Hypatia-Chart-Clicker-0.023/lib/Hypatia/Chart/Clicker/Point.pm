@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Point;
 {
-  $Hypatia::Chart::Clicker::Point::VERSION = '0.022';
+  $Hypatia::Chart::Clicker::Point::VERSION = '0.023';
 }
 use Moose;
 use MooseX::Aliases;
@@ -75,7 +75,7 @@ Hypatia::Chart::Clicker::Point - Scatterplots with Hypatia and Chart::Clicker
 
 =head1 VERSION
 
-version 0.022
+version 0.023
 
 =head1 SYNOPSIS
 
