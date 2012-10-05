@@ -117,6 +117,8 @@ sub chart
 	
 	$dc->renderer($renderer);
 	
+	$cc = $self->options->apply_to($cc);
+	
 	return $cc;
 }
 

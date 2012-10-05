@@ -1,6 +1,7 @@
 package Hypatia::Chart::Clicker;
 use Moose;
 use Moose::Util::TypeConstraints;
+use Hypatia::Chart::Clicker::Options;
 use namespace::autoclean;
 
 extends 'Hypatia::Base';
@@ -54,7 +55,16 @@ In C<Chart::Clicker>, every chart has one or more data set (ie L<Chart::Clicker:
 
 has 'data_series_names'=>(isa=>'Str|ArrayRef[Str]',is=>'ro',predicate=>'has_data_series_names');
 
+=attr options
 
+This is a hash reference of options. Check out L<Hypatia::Chart::Clicker::Options> for more information.
+
+=cut
+
+subtype 'Options', as class_type("Hypatia::Chart::Clicker::Options");
+coerce "Options", from "HashRef", via { Hypatia::Chart::Clicker::Options->new($_) };
+
+has 'options'=>(isa=>"Options", is=>"ro", coerce=>1, default=>sub{ Hypatia::Chart::Clicker::Options->new });
 
 
 

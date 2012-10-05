@@ -71,6 +71,8 @@ sub chart
 	my $dc=$cc->get_context("default");    
 	$dc->renderer->additive($self->stacked);        
 	
+	$cc = $self->options->apply_to($cc);
+	
 	return $cc;
 }
 

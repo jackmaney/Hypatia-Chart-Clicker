@@ -63,6 +63,8 @@ sub chart
 	my $dc=$cc->get_context("default");
 	$dc->renderer(Chart::Clicker::Renderer::Point->new);
 	
+	$cc = $self->options->apply_to($cc);
+	
 	return $cc;
 }
 
