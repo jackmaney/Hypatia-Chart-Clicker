@@ -1,6 +1,7 @@
 package Hypatia::Chart::Clicker;
 use Moose;
 use Moose::Util::TypeConstraints;
+use Hypatia::Chart::Clicker::Types qw(Options);
 use Hypatia::Chart::Clicker::Options;
 use namespace::autoclean;
 
@@ -61,10 +62,8 @@ This is a hash reference of options. Check out L<Hypatia::Chart::Clicker::Option
 
 =cut
 
-subtype 'Options', as class_type("Hypatia::Chart::Clicker::Options");
-coerce "Options", from "HashRef", via { Hypatia::Chart::Clicker::Options->new($_) };
 
-has 'options'=>(isa=>"Options", is=>"ro", coerce=>1, default=>sub{ Hypatia::Chart::Clicker::Options->new });
+has 'options'=>(isa=>Options, is=>"ro", coerce=>1, default=>sub{ Hypatia::Chart::Clicker::Options->new });
 
 
 
