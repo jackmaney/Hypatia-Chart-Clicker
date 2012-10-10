@@ -4,7 +4,7 @@ use warnings;
 use Moose;
 use Moose::Util::TypeConstraints;
 use Hypatia::Types qw(PositiveNum PositiveInt);
-use Hypatia::Chart::Clicker::Types qw(ColorNum Color Padding Position);
+use Hypatia::Chart::Clicker::Types qw(ColorNum Color Padding Position AxisOptions Format);
 use Hypatia::Chart::Clicker::Options::Axis;
 #use Hypatia::Chart::Clicker::Options::Title;
 use Graphics::Color::RGB;
@@ -14,38 +14,77 @@ use Scalar::Util qw(blessed);
 #ABSTRACT: Options to apply to Chart::Clicker objects via Hypatia
 
 
-#subtype 'AxisOptions', as class_type("Hypatia::Chart::Clicker::Options::Axis");
-#coerce 'AxisOptions', from 'HashRef', via { Hypatia::Chart::Clicker::Options::Axis->new($_) };
+
 
 
 #subtype "TitleOptions", as class_type("Hypatia::Chart::Clicker::Options::Title");
 #coerce "TitleOptions", from "Str", via { Hypatia::Chart::Clicker::Options::Title->new({text=>$_}) };
 #coerce "TitleOptions", from "HashRef", via { Hypatia::Chart::Clicker::Options::Title->new($_) };
 
-#has [qw(domain_axis range_axis)]=>(isa=>"AxisOptions",is=>"ro",coerce=>1
-#    ,default=>sub{ Hypatia::Chart::Clicker::Options::Axis->new });
+=attr domain_axis,range_axis
+
+These hash references are passed directly into L<Hypatia::Chart::Clicker::Options::Axis> objects. Look at the documentation of that module for more details.
+
+=cut
+
+has [qw(domain_axis range_axis)]=>(isa=>AxisOptions,is=>"ro",coerce=>1
+    ,default=>sub{ Hypatia::Chart::Clicker::Options::Axis->new });
+
+=attr background_color
+
+A L<Graphics::Color::RGB> object. You can also pass in a hash reference with keys of C<r>, C<g>, C<b>, and C<a> (and values between 0 and 1) or you can pass a single number between 0 and 1 (that will be assigned to each of C<r>, C<g>, C<b>, and C<a>). The default is white.
+
+=cut
 
 has 'background_color'=>(isa=>Color,is=>"ro",coerce=>1,default=>sub{ Graphics::Color::RGB->new({r=>1,g=>1,b=>1,a=>1}) });
 
-#TODO: Border options
+=attr format
 
-has 'format'=>(isa=>enum([qw(png pdf ps svg PNG PDF PS SVG Png Pdf Ps Svg)]),is=>'ro',default=>"PNG");
+One of C<png>, C<pdf>, C<ps>, or C<svg>. The default is C<png>.
+
+=cut
+
+has 'format'=>(isa=>Format,is=>'ro',default=>"PNG");
+
+=attr width,height
+
+The width and height of the resulting image. The defaults are 500 and 300, respectively.
+
+=cut
+
+has "width"=>(isa=>PositiveInt, is=>"ro", default=>500);
 
 has 'height'=>(isa=>PositiveInt,is=>'ro',default=>300);
 
 #TODO: Legend options
 
+=attr legend_position
 
+One of C<north>, C<west>, C<east>, C<south>, or C<center>. The default is C<south>.
+
+=cut
 
 has 'legend_position'=>(isa=>Position,is=>'ro',default=>"south");
+
+=attr padding
+
+A L<Graphics::Primitive::Insets> object representing the amount of padding (in pixels) for each of the sides of the chart. You may also pass in either a hash reference (with keys of C<top>, C<bottom>, C<right>, and C<left> having positive integer values), or a positive integer (which is then assigned to each of C<top>, C<bottom>, C<right>, and C<left>).
+
+=cut
 
 has "padding"=>(isa=>Padding,is=>"ro",coerce=>1,default=>sub{ Graphics::Primitive::Insets->new({top=>3,bottom=>3,right=>3,left=>3}) });
 
 #has "title"=>(isa=>"TitleOptions", is=>"ro", coerce=>1, default=>sub{ Hypatia::Chart::Clicker::Options::Title->new });
 
+=attr title_position
+
+One of C<north>, C<west>, C<east>, C<south>, or C<center>. The default is C<north>.
+
+=cut
+
 has "title_position"=>(isa=>Position, is=>"ro",default=>"north");
 
-has "width"=>(isa=>PositiveInt, is=>"ro", default=>500);
+
 
 
 sub apply_to
@@ -58,7 +97,19 @@ sub apply_to
     foreach my $attr(__PACKAGE__->meta->get_all_attributes)
     {
 	my $attr_name=$attr->name;
+	
+	
 	my $attr_value = $self->$attr_name();
+	
+	if($attr_name eq "domain_axis" or $attr_name eq "range_axis")
+	{
+	    my $axis=$cc->$attr_name();
+	    
+	    eval{$cc->$attr_name($self->$attr_name->apply_to($axis))};
+	    
+	    confess $@ if $@;
+	}
+	
 	
 	eval{$cc->$attr_name($attr_value)};
 	
