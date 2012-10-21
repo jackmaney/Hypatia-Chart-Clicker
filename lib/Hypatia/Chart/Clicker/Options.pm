@@ -4,7 +4,7 @@ use warnings;
 use Moose;
 use Moose::Util::TypeConstraints;
 use Hypatia::Types qw(PositiveNum PositiveInt);
-use Hypatia::Chart::Clicker::Types qw(ColorNum Color Padding Position AxisOptions Format);
+use Hypatia::Chart::Clicker::Types qw(NumBetween0And1 Color Padding Position AxisOptions Format);
 use Hypatia::Chart::Clicker::Options::Axis;
 #use Hypatia::Chart::Clicker::Options::Title;
 use Graphics::Color::RGB;
@@ -13,7 +13,19 @@ use Scalar::Util qw(blessed);
 
 #ABSTRACT: Options to apply to Chart::Clicker objects via Hypatia
 
+=head1 NOTE
 
+Attributes of the following object types can be coerced from the following:
+
+=over 4
+
+=item * L<Graphics::Color::RGB> from either a hash reference with keys of C<r>, C<g>, C<b>, and C<a>
+(and values between 0 and 1) or a number between 0 and 1 that is passed in for each of
+C<r>, C<g>, C<b>, and C<a>.
+
+=item * L<Hypatia::Chart::Clicker::Options::Axis> from a hash reference.
+
+=back
 
 
 
@@ -32,7 +44,7 @@ has [qw(domain_axis range_axis)]=>(isa=>AxisOptions,is=>"ro",coerce=>1
 
 =attr background_color
 
-A L<Graphics::Color::RGB> object. You can also pass in a hash reference with keys of C<r>, C<g>, C<b>, and C<a> (and values between 0 and 1) or you can pass a single number between 0 and 1 (that will be assigned to each of C<r>, C<g>, C<b>, and C<a>). The default is white.
+A L<Graphics::Color::RGB> object that, unsurprisingly, controls the color of the background. The default is white.
 
 =cut
 
@@ -40,7 +52,7 @@ has 'background_color'=>(isa=>Color,is=>"ro",coerce=>1,default=>sub{ Graphics::C
 
 =attr format
 
-One of C<png>, C<pdf>, C<ps>, or C<svg>. The default is C<png>.
+A string: one of C<png>, C<pdf>, C<ps>, or C<svg>. The default is C<png>.
 
 =cut
 
@@ -103,17 +115,20 @@ sub apply_to
 	
 	if($attr_name eq "domain_axis" or $attr_name eq "range_axis")
 	{
-	    my $axis=$cc->$attr_name();
+	    my $dc=$cc->get_context("default");
 	    
-	    eval{$cc->$attr_name($self->$attr_name->apply_to($axis))};
+	    my $axis=$dc->$attr_name();
+	    
+	    eval{$dc->$attr_name($self->$attr_name->apply_to($axis))};
 	    
 	    confess $@ if $@;
 	}
-	
-	
-	eval{$cc->$attr_name($attr_value)};
-	
-	confess $@ if $@;
+	else
+	{
+	    eval{$cc->$attr_name($attr_value)};
+	    
+	    confess $@ if $@;
+	}
     }
     
     return $cc;

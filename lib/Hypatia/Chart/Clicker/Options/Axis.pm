@@ -3,10 +3,11 @@ use strict;
 use warnings;
 use Moose;
 use MooseX::Aliases;
-use Hypatia::Types qw(PositiveInt NumBetween0And1);
-use Hypatia::Chart::Clicker::Types qw(Color Font Orientation Position AxisRange);
+use Hypatia::Types qw(PositiveInt);
+use Hypatia::Chart::Clicker::Types qw(Color NumBetween0And1 Font AxisPosition AxisRange);
 use Graphics::Color::RGB;
 use Graphics::Primitive::Font;
+use Scalar::Util qw(blessed);
 
 #ABSTRACT: Options to apply to axes in Chart::Clicker via Hypatia
 
@@ -93,11 +94,11 @@ has "label_font"=>(isa=>Font, is=>"ro", coerce=>1,default=>sub{ Graphics::Primit
 
 =attr position
 
-The position of the axis on the chart. This attribute is optional.
+The position of the axis on the chart (one of left, right, top, or bottom). This attribute is optional.
 
 =cut
 
-has "position"=>(isa=>Position, is=>"ro", predicate=>"has_position_option");
+has "position"=>(isa=>AxisPosition, is=>"ro", predicate=>"has_position_option");
 
 =attr range
 
@@ -105,7 +106,7 @@ A L<Chart::Clicker::Data::Range> object representing the range of the axis. This
 
 =cut
 
-has "range"=>(isa=>AxisRange, is=>"ro", predicate=>"has_range_option");
+has "range"=>(isa=>AxisRange, is=>"ro", coerce=>1, predicate=>"has_range_option");
 
 =attr show_ticks
 
@@ -129,7 +130,7 @@ A L<Chart::Clicker::Data::Range> object. If supplied, this range of values will 
 
 =cut
 
-has "skip_range"=>(isa=>AxisRange, is=>"ro", predicate=>"has_skip_range_option");
+has "skip_range"=>(isa=>AxisRange, is=>"ro", coerce=>1, predicate=>"has_skip_range_option");
 
 =attr tick_font
 
@@ -175,9 +176,49 @@ has "tick_values"=>(isa=>"ArrayRef", is=>"ro", predicate=>"has_tick_values_optio
 
 The number of ticks to show. See L<Chart::Clicker::Axis> for more details.
 
+=cut
+
+
 has "ticks"=>(isa=>PositiveInt, is=>"ro", predicate=>"has_ticks_option", alias=>"num_ticks");
 
-=cut
+sub apply_to
+{
+    my $self=shift;
+    my $axis=shift;
+    
+    confess "Argument to sub apply_to is either missing or not a Chart::Clicker::Axis object"
+	unless blessed($axis) eq "Chart::Clicker::Axis";
+    
+    my @attrs_to_check = qw(label position range skip_range tick_labels tick_values ticks);
+    
+    
+    foreach my $attr(__PACKAGE__->meta->get_all_attributes)
+    {
+	my $attr_name=$attr->name;
+	
+	my $apply_option_flag = 1;
+	
+	if(grep{$attr_name eq $_}@attrs_to_check)
+	{
+	    my $predicate = "has_" . $attr_name . "_option";
+	    
+	    $apply_option_flag = 0 unless $self->$predicate();
+	}
+	
+	
+	if($apply_option_flag)
+	{
+	    my $attr_value = $self->$attr_name();
+	    
+	    eval{$axis->$attr_name($attr_value)};
+	    
+	    confess $@ if $@;
+	}
+    }
+    
+    return $axis;
+}
+
 
 __PACKAGE__->meta->make_immutable;
 1;

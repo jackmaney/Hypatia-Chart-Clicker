@@ -15,11 +15,10 @@ BEGIN
     }
 }
 
+
 my $hdts=Hypatia::DBI::Test::SQLite->new({table=>"hypatia_test_xy"});
 
-my @formats=qw(png pdf ps svg PNG PDF PS SVG Png Pdf Ps Svg);
-
-foreach my $format(@formats)
+foreach my $axis(qw(domain_axis range_axis))
 {
 
     my $hypatia=Hypatia->new({
@@ -27,16 +26,23 @@ foreach my $format(@formats)
 	columns=>{x=>"x1",y=>"y1"},
 	back_end=>"Chart::Clicker",
 	graph_type=>"Line",
-	options=>{format=>$format}
+	options=>{$axis=>{fudge_amount=>0.05}}
     });
-    
+
     isa_ok($hypatia,"Hypatia");
     
     my $cc=$hypatia->chart;
     
     isa_ok($cc,"Chart::Clicker");
+    
+    my $dc = $cc->get_context("default");
+    
+    my $axis_obj = $dc->$axis();
+    
+    isa_ok($axis_obj,"Chart::Clicker::Axis");
+    
+    ok($axis_obj->fudge_amount == 0.05);
 
-    ok($cc->format eq $format);
 }
 
 done_testing();

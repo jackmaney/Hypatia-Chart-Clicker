@@ -80,7 +80,10 @@ sub chart
 
 alias graph=>'chart';
 
-with 'Hypatia::Chart::Clicker::Role::XY';
+sub BUILD
+{
+	with 'Hypatia::Chart::Clicker::Role::XY';
+}
 
 
 1;

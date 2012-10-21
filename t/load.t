@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 7;
+use Test::More;
 
 BEGIN {
     my @modules=qw(
@@ -11,6 +11,9 @@ BEGIN {
         Hypatia::Chart::Clicker::Point
         Hypatia::Chart::Clicker::Bubble
         Hypatia::Chart::Clicker::Pie
+        Hypatia::Chart::Clicker::Types
+        Hypatia::Chart::Clicker::Options
+        Hypatia::Chart::Clicker::Options::Axis
     );
 
     foreach(@modules)
@@ -21,3 +24,4 @@ BEGIN {
 
 diag( "Testing Hypatia::Chart::Clicker $Hypatia::Chart::Clicker::VERSION, Perl $], $^X" );
 
+done_testing();

@@ -78,9 +78,9 @@ sub chart
 
 alias graph=>'chart';
 
-
-with 'Hypatia::Chart::Clicker::Role::XY';
-
-__PACKAGE__->meta->make_immutable;
+sub BUILD
+{
+	with 'Hypatia::Chart::Clicker::Role::XY';
+}
 
 1;

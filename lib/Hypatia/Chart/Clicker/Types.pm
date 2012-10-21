@@ -10,7 +10,9 @@ use MooseX::Types -declare=>[
 	Font
 	AxisRange
 	AxisOptions
+	AxisPosition
 	Format
+	RangeArrayRef
     )
 ];
 use MooseX::Types::Moose qw(HashRef Num Str ArrayRef);
@@ -41,10 +43,11 @@ subtype RangeArrayRef, as ArrayRef[Num], where{@{$_} == 2 and $_->[0] < $_->[1]}
 subtype AxisRange, as class_type("Chart::Clicker::Data::Range");
 coerce AxisRange, from RangeArrayRef, via {
     Chart::Clicker::Data::Range->new({min=>$_->[0], max=>$_->[1]});
-}
+};
 
 subtype AxisOptions, as class_type("Hypatia::Chart::Clicker::Options::Axis");
 coerce AxisOptions, from HashRef, via { Hypatia::Chart::Clicker::Options::Axis->new($_) };
 
+enum AxisPosition, [qw(left right top bottom)];
 
 1;
