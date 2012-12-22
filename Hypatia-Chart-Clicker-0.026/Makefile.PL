@@ -9,10 +9,10 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Hypatia Bindings for Chart::Clicker\r",
+  "ABSTRACT" => "Hypatia Bindings for Chart::Clicker",
   "AUTHOR" => "Jack Maney <jack\@jackmaney.com>",
   "BUILD_REQUIRES" => {
-    "Hypatia" => "0.027",
+    "Hypatia" => 0,
     "Hypatia::DBI::Test::SQLite" => 0,
     "Test::More" => 0
   },
@@ -39,6 +39,7 @@ my %WriteMakefileArgs = (
     "Graphics::Color::RGB" => 0,
     "Graphics::Primitive::Font" => 0,
     "Graphics::Primitive::Insets" => 0,
+    "Hypatia" => "0.029",
     "Hypatia::Base" => 0,
     "Hypatia::Columns" => 0,
     "Hypatia::Types" => 0,
@@ -53,7 +54,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.025",
+  "VERSION" => "0.026",
   "test" => {
     "TESTS" => "t/*.t t/sqlite/*.t t/sqlite/options/*.t t/sqlite/options/axis/*.t"
   }

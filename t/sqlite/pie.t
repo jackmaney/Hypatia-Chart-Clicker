@@ -44,9 +44,10 @@ my $keys=$dataseries->keys;
 my $values=$dataseries->values;
 my $name=$dataseries->name;
 
+
 ok(@$keys == 2 and scalar(grep{$_ == 1 or $_ == 2}@$keys) == 2);
 ok(@$values == 2 and scalar(grep{$_ == 0 or $_ == 2}@$values) == 2);
-ok($name eq "some other thing");
+ok($name eq "'some other thing'");
 
 $dataseries=$dataset->series->[1];
 $keys=$dataseries->keys;
@@ -55,7 +56,7 @@ $name=$dataseries->name;
 
 ok(@$keys == 2 and scalar(grep{$_ == 1 or $_ == 2}@$keys) == 2);
 ok(@$values == 2 and scalar(grep{$_ == 0 or $_ == 1.48}@$values) == 2);
-ok($name eq "some type");
+ok($name eq "'some type'");
 
 $dataseries=$dataset->series->[2];
 $keys=$dataseries->keys;
@@ -64,7 +65,7 @@ $name=$dataseries->name;
 
 ok(@$keys == 2 and scalar(grep{$_ == 1 or $_ == 2}@$keys) == 2);
 ok(@$values == 2 and scalar(grep{$_ == 0 or $_ == 1.78}@$values) == 2);
-ok($name eq "yet another thing");
+ok($name eq "'yet another thing'");
 
 
 done_testing();

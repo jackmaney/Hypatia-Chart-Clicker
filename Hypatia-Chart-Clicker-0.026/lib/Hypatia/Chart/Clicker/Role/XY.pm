@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Role::XY;
 {
-  $Hypatia::Chart::Clicker::Role::XY::VERSION = '0.025';
+  $Hypatia::Chart::Clicker::Role::XY::VERSION = '0.026';
 }
 use Moose::Role;
 use Chart::Clicker::Data::Series;
@@ -130,7 +130,7 @@ Hypatia::Chart::Clicker::Role::XY - Column Guessing and DataSet Building for Mos
 
 =head1 VERSION
 
-version 0.025
+version 0.026
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Types;
 {
-  $Hypatia::Chart::Clicker::Types::VERSION = '0.025';
+  $Hypatia::Chart::Clicker::Types::VERSION = '0.026';
 }
 use MooseX::Types -declare=>[
     qw(
@@ -65,7 +65,7 @@ Hypatia::Chart::Clicker::Types
 
 =head1 VERSION
 
-version 0.025
+version 0.026
 
 =head1 AUTHOR
 

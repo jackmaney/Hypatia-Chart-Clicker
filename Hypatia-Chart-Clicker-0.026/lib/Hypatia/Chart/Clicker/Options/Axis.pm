@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Options::Axis;
 {
-  $Hypatia::Chart::Clicker::Options::Axis::VERSION = '0.025';
+  $Hypatia::Chart::Clicker::Options::Axis::VERSION = '0.026';
 }
 use strict;
 use warnings;
@@ -121,7 +121,7 @@ Hypatia::Chart::Clicker::Options::Axis - Options to apply to axes in Chart::Clic
 
 =head1 VERSION
 
-version 0.025
+version 0.026
 
 =head1 NOTE
 

@@ -1,6 +1,6 @@
 package Hypatia::Chart::Clicker::Options;
 {
-  $Hypatia::Chart::Clicker::Options::VERSION = '0.025';
+  $Hypatia::Chart::Clicker::Options::VERSION = '0.026';
 }
 use strict;
 use warnings;
@@ -96,7 +96,7 @@ Hypatia::Chart::Clicker::Options - Options to apply to Chart::Clicker objects vi
 
 =head1 VERSION
 
-version 0.025
+version 0.026
 
 =head1 NOTE
 
